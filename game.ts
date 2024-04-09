@@ -1,7 +1,15 @@
 // Get references to SVG elements
-const player1 = document.getElementById('player1') as SVGRectElement;
-const player2 = document.getElementById('player2') as SVGRectElement;
-const ball = document.getElementById('ball') as SVGCircleElement;
+// Get references to SVG elements
+// Get references to SVG elements
+// Get references to SVG elements
+const player1Element = document.getElementById('player1') as SVGRectElement | null;
+const player2Element = document.getElementById('player2') as SVGRectElement | null;
+const ballElement = document.getElementById('ball') as SVGCircleElement | null;
+
+// Check if elements exist before using them
+const player1 = player1Element ?? null;
+const player2 = player2Element ?? null;
+const ball = ballElement ?? null;
 
 // Constants
 const fieldWidth = 800;
@@ -13,7 +21,7 @@ let scorePlayer1 = 0;
 let scorePlayer2 = 0;
 let gameTime = 60;
 let gameStarted = false;
-let gameLoop: number | null = null;
+let gameLoop: number | null = null; // Define type explicitly
 
 // Initial positions
 let player1Y = fieldHeight / 2 - playerHeight / 2;
@@ -24,60 +32,66 @@ let ballSpeedX = 5;
 let ballSpeedY = 5;
 
 // Event listener for player movement
-document.addEventListener('keydown', (event) => {
-    if (gameStarted) {
-        if (event.key === 'w' && player1Y > 0) {
-            player1Y -= playerSpeed;
-            player1.setAttribute('y', player1Y.toString());
-        } else if (event.key === 's' && player1Y < fieldHeight - playerHeight) {
-            player1Y += playerSpeed;
-            player1.setAttribute('y', player1Y.toString());
-        } else if (event.key === 'ArrowUp' && player2Y > 0) {
-            player2Y -= playerSpeed;
-            player2.setAttribute('y', player2Y.toString());
-        } else if (event.key === 'ArrowDown' && player2Y < fieldHeight - playerHeight) {
-            player2Y += playerSpeed;
-            player2.setAttribute('y', player2Y.toString());
-        }
-    }
-});
+document.addEventListener('keydown', handlePlayerMovement);
 
 // Start game button click event
 const startButton = document.getElementById('startButton')!;
-startButton.addEventListener('click', () => {
-    if (!gameStarted) {
-        startGame();
-    }
-});
+startButton.addEventListener('click', startOrResetGame);
 
 // Reset game button click event
 const resetButton = document.getElementById('resetButton')!;
-resetButton.addEventListener('click', () => {
+resetButton.addEventListener('click', startOrResetGame);
+
+// Function to handle player movement
+function handlePlayerMovement(event: KeyboardEvent) {
     if (gameStarted) {
+        if (event.key === 'w' && player1 && player1Y > 0) {
+            movePlayer(player1, player1Y, playerSpeed, -1);
+        } else if (event.key === 's' && player1 && player1Y < fieldHeight - playerHeight) {
+            movePlayer(player1, player1Y, playerSpeed, 1);
+        } else if (event.key === 'ArrowUp' && player2 && player2Y > 0) {
+            movePlayer(player2, player2Y, playerSpeed, -1);
+        } else if (event.key === 'ArrowDown' && player2 && player2Y < fieldHeight - playerHeight) {
+            movePlayer(player2, player2Y, playerSpeed, 1);
+        }
+    }
+}
+
+
+// Function to move a player
+function movePlayer(player: SVGRectElement, yPos: number, speed: number, direction: number) {
+    yPos += speed * direction;
+    player.setAttribute('y', yPos.toString());
+}
+
+// Function to start or reset the game
+function startOrResetGame() {
+    if (!gameStarted) {
+        startGame();
+    } else {
         resetGame();
     }
-});
+}
 
 // Function to start the game
 function startGame() {
     gameStarted = true;
-    startButton.style.display = 'none';
+    (startButton as HTMLElement).style.display = 'none'; // Type assertion
     gameTime = 60;
     scorePlayer1 = 0;
     scorePlayer2 = 0;
     resetBall();
     updateScoreDisplay();
     updateTimerDisplay();
-    gameLoop = setInterval(updateGame, 1000 / 60);
+    gameLoop = window.setInterval(updateGame, 1000 / 60); // Use window.setInterval
 }
 
-// Function to reset the game
 function resetGame() {
     gameStarted = false;
-    startButton.style.display = 'block';
+    (startButton as HTMLElement).style.display = 'block'; // Type assertion
     clearInterval(gameLoop!);
+    gameLoop = null;
 }
-
 // Function to update the game state
 function updateGame() {
     updateBall();
