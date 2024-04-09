@@ -1,25 +1,45 @@
-body {
+/* Reset default margin and padding */
+body, html {
     margin: 0;
     padding: 0;
 }
 
-svg {
-    display: block;
-    margin: auto;
+/* Center the game container vertically and horizontally */
+#container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
+/* Style for the football field SVG */
 #field {
-    border: 2px solid #000;
+    border: 2px solid #ffffff; /* Add border around the field */
+    margin-right: 20px; /* Add space between field and other elements */
 }
 
+/* Style for the goal posts */
+#field rect {
+    stroke: #ffffff; /* Add white outline to all SVG rectangles */
+}
+
+/* Style for the center circle */
+#field circle {
+    stroke: #ffffff; /* Add white outline to SVG circles */
+    stroke-dasharray: 5; /* Add dashed stroke style */
+}
+
+/* Style for the players */
 #player1, #player2 {
-    cursor: pointer;
+    cursor: pointer; /* Change cursor to pointer when hovering over players */
 }
 
+/* Style for the ball */
 #ball {
-    animation: bounce 1s infinite alternate;
+    animation: bounce 1s infinite alternate; /* Add bouncing animation to the ball */
 }
 
+/* Keyframes for bouncing animation */
 @keyframes bounce {
     0% {
         transform: translateY(-5px);
@@ -27,4 +47,42 @@ svg {
     100% {
         transform: translateY(5px);
     }
+}
+
+/* Style for the score display */
+#score {
+    font-size: 24px; /* Increase font size for better visibility */
+    margin-bottom: 10px; /* Add space between score display and timer display */
+}
+
+/* Style for the timer display */
+#timer {
+    font-size: 24px; /* Increase font size for better visibility */
+}
+
+/* Style for the button container */
+#buttonContainer {
+    margin-top: 20px; /* Add space between button container and other elements */
+}
+
+/* Style for the Start Game and Reset Game buttons */
+#buttonContainer button {
+    padding: 10px 20px; /* Add padding to buttons */
+    font-size: 18px; /* Increase font size for better visibility */
+    background-color: #4CAF50; /* Green background color */
+    color: white; /* White text color */
+    border: none; /* Remove border */
+    border-radius: 5px; /* Add rounded corners */
+    cursor: pointer; /* Change cursor to pointer when hovering over buttons */
+    margin-right: 10px; /* Add space between buttons */
+}
+
+/* Style for the Reset Game button */
+#resetButton {
+    background-color: #f44336; /* Red background color */
+}
+
+/* Hover effect for buttons */
+#buttonContainer button:hover {
+    opacity: 0.8; /* Reduce opacity on hover for visual feedback */
 }
