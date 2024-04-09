@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Football Game</title>
-<link rel="stylesheet" type="text/css" href="styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Football Game</title>
+    <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-<div id="field">
-    <div id="player1"></div>
-    <div id="player2"></div>
-    <div id="ball"></div>
-    <div id="goal1"></div>
-    <div id="goal2"></div>
-    <div id="score">0 - 0</div>
-    <div id="timer">Time: 60</div>
-    <div id="buttonContainer">
-        <button id="startButton">Start Game</button>
-        <button id="resetButton">Reset Game</button>
-    </div>
-</div>
+    <svg id="field" width="800" height="400">
+        <!-- Football Field -->
+        <rect x="0" y="0" width="800" height="400" fill="#4CAF50"/>
+        <!-- Left Goal -->
+        <rect x="0" y="150" width="20" height="100" fill="#ffffff"/>
+        <!-- Right Goal -->
+        <rect x="780" y="150" width="20" height="100" fill="#ffffff"/>
+        <!-- Left Player -->
+        <rect id="player1" x="50" y="150" width="20" height="100" fill="#ff0000"/>
+        <!-- Right Player -->
+        <rect id="player2" x="730" y="150" width="20" height="100" fill="#0000ff"/>
+        <!-- Ball -->
+        <circle id="ball" cx="400" cy="200" r="10" fill="#000000"/>
+    </svg>
 
-<script src="game.js"></script>
+    <script src="game.ts"></script>
 </body>
 </html>
+
 
