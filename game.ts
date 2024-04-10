@@ -1,14 +1,14 @@
 // Get references to SVG elements
-const player1 = document.getElementById('player1') as SVGRectElement | null;
-const player2 = document.getElementById('player2') as SVGRectElement | null;
-const ball = document.getElementById('ball') as SVGCircleElement | null;
+const player1 = document.getElementById('player1') as SVGCircleElement;
+const player2 = document.getElementById('player2') as SVGCircleElement;
+const ball = document.getElementById('ball') as SVGCircleElement;
 
 // Constants
 const fieldWidth = 800;
-const fieldHeight = 400;
-const playerHeight = 100;
+const fieldHeight = 500;
+const playerRadius = 20;
 const ballRadius = 10;
-const playerSpeed = 10;
+const playerSpeed = 5;
 let scorePlayer1 = 0;
 let scorePlayer2 = 0;
 let gameTime = 60;
@@ -16,53 +16,33 @@ let gameStarted = false;
 let gameLoop: number | null = null;
 
 // Initial positions
-let player1Y = fieldHeight / 2 - playerHeight / 2;
-let player2Y = fieldHeight / 2 - playerHeight / 2;
-let ballX = fieldWidth / 2;
-let ballY = fieldHeight / 2;
-let ballSpeedX = 5;
-let ballSpeedY = 5;
+let player1X = 50;
+let player1Y = 250;
+let player2X = 750;
+let player2Y = 250;
+let ballX = 400;
+let ballY = 250;
+let ballSpeedX = 2;
+let ballSpeedY = 2;
 
 // Event listener for player movement
 document.addEventListener('keydown', handlePlayerMovement);
 
 // Start game button click event
 const startButton = document.getElementById('startButton')!;
-startButton.addEventListener('click', startOrResetGame);
+startButton.addEventListener('click', () => {
+    if (!gameStarted) {
+        startGame();
+    }
+});
 
 // Reset game button click event
 const resetButton = document.getElementById('resetButton')!;
-resetButton.addEventListener('click', startOrResetGame);
-
-// Function to handle player movement
-function handlePlayerMovement(event: KeyboardEvent) {
+resetButton.addEventListener('click', () => {
     if (gameStarted) {
-        if (event.key === 'w' && player1 && player1Y > 0) {
-            movePlayer(player1, player1Y, playerSpeed, -1);
-        } else if (event.key === 's' && player1 && player1Y < fieldHeight - playerHeight) {
-            movePlayer(player1, player1Y, playerSpeed, 1);
-        } else if (event.key === 'ArrowUp' && player2 && player2Y > 0) {
-            movePlayer(player2, player2Y, playerSpeed, -1);
-        } else if (event.key === 'ArrowDown' && player2 && player2Y < fieldHeight - playerHeight) {
-            movePlayer(player2, player2Y, playerSpeed, 1);
-        }
-    }
-}
-
-// Function to move a player
-function movePlayer(player: SVGRectElement, yPos: number, speed: number, direction: number) {
-    yPos += speed * direction;
-    player.setAttribute('y', yPos.toString());
-}
-
-// Function to start or reset the game
-function startOrResetGame() {
-    if (!gameStarted) {
-        startGame();
-    } else {
         resetGame();
     }
-}
+});
 
 // Function to start the game
 function startGame() {
@@ -71,10 +51,9 @@ function startGame() {
     gameTime = 60;
     scorePlayer1 = 0;
     scorePlayer2 = 0;
-    resetBall();
     updateScoreDisplay();
     updateTimerDisplay();
-    gameLoop = window.setInterval(updateGame, 1000 / 60); // Use window.setInterval
+    gameLoop = setInterval(updateGame, 1000 / 60);
 }
 
 // Function to reset the game
@@ -92,46 +71,51 @@ function updateGame() {
 
 // Function to update the position of the ball
 function updateBall() {
-    if (ball) {
-        ballX += ballSpeedX;
-        ballY += ballSpeedY;
+    // Move ball
+    ballX += ballSpeedX;
+    ballY += ballSpeedY;
 
-        // Check for collisions with top and bottom walls
-        if (ballY - ballRadius <= 0 || ballY + ballRadius >= fieldHeight) {
-            ballSpeedY *= -1;
-        }
-
-        // Check for collisions with players
-        if (ballX - ballRadius <= 70 && ballY >= player1Y && ballY <= player1Y + playerHeight) {
-            ballSpeedX *= -1;
-        }
-        if (ballX + ballRadius >= fieldWidth - 70 && ballY >= player2Y && ballY <= player2Y + playerHeight) {
-            ballSpeedX *= -1;
-        }
-
-        // Check for goal
-        if (ballX - ballRadius <= 0) {
-            scorePlayer2++;
-            resetBall();
-            updateScoreDisplay();
-        } else if (ballX + ballRadius >= fieldWidth) {
-            scorePlayer1++;
-            resetBall();
-            updateScoreDisplay();
-        }
-
-        // Update ball position
-        ball.setAttribute('cx', ballX.toString());
-        ball.setAttribute('cy', ballY.toString());
+    // Check for collisions with top and bottom walls
+    if (ballY - ballRadius <= 0 || ballY + ballRadius >= fieldHeight) {
+        ballSpeedY *= -1;
     }
+
+    // Check for collisions with players
+    if (checkPlayerCollision(player1X, player1Y)) {
+        ballSpeedX *= -1;
+    }
+    if (checkPlayerCollision(player2X, player2Y)) {
+        ballSpeedX *= -1;
+    }
+
+    // Check for goal
+    if (ballX - ballRadius <= 0) {
+        scorePlayer2++;
+        resetBall();
+        updateScoreDisplay();
+    } else if (ballX + ballRadius >= fieldWidth) {
+        scorePlayer1++;
+        resetBall();
+        updateScoreDisplay();
+    }
+
+    // Update ball position
+    ball.setAttribute('cx', ballX.toString());
+    ball.setAttribute('cy', ballY.toString());
+}
+
+// Function to check collision with players
+function checkPlayerCollision(playerX: number, playerY: number): boolean {
+    const distance = Math.sqrt((playerX - ballX) ** 2 + (playerY - ballY) ** 2);
+    return distance < playerRadius + ballRadius;
 }
 
 // Function to reset the position of the ball
 function resetBall() {
     ballX = fieldWidth / 2;
     ballY = fieldHeight / 2;
-    ballSpeedX = Math.random() > 0.5 ? 5 : -5;
-    ballSpeedY = Math.random() * 10 - 5;
+    ballSpeedX = 2;
+    ballSpeedY = 2;
 }
 
 // Function to update the score display
@@ -163,3 +147,40 @@ function endGame() {
     startButton.textContent = 'Start Game';
     gameTime = 60;
 }
+
+// Function to handle player movement
+function handlePlayerMovement(event: KeyboardEvent) {
+    if (gameStarted) {
+        switch (event.key) {
+            case 'ArrowUp':
+                if (player1Y > 0) player1Y -= playerSpeed;
+                break;
+            case 'ArrowDown':
+                if (player1Y < fieldHeight) player1Y += playerSpeed;
+                break;
+            case 'q':
+                if (player2Y > 0) player2Y -= playerSpeed;
+                break;
+            case 'a':
+                if (player2Y < fieldHeight) player2Y += playerSpeed;
+                break;
+            case 'z':
+                if (player2X > 0) player2X -= playerSpeed;
+                break;
+            case 'x':
+                if (player2X < fieldWidth) player2X += playerSpeed;
+                break;
+        }
+        updatePlayerPosition();
+    }
+}
+
+// Function to update player position
+function updatePlayerPosition() {
+    player1.setAttribute('cy', player1Y.toString());
+    player2.setAttribute('cy', player2Y.toString());
+    player2.setAttribute('cx', player2X.toString());
+}
+
+// Start game automatically when page loads
+startGame();

@@ -27,26 +27,17 @@ body {
     margin-top: 20px;
 }
 
-/* Goal styles */
-rect {
-    stroke: #000;
-    stroke-width: 2;
-}
-
 /* Player styles */
-#player1 {
-    fill: #FFC107; /* Player 1 color */
-    transition: fill 0.3s ease; /* Smooth transition for player color change */
-}
-
+#player1,
 #player2 {
-    fill: #2196F3; /* Player 2 color */
-    transition: fill 0.3s ease; /* Smooth transition for player color change */
+    stroke: #000000;
+    stroke-width: 2px;
 }
 
 /* Ball styles */
 #ball {
-    fill: #FFF;
+    stroke: #000000;
+    stroke-width: 2px;
 }
 
 /* Scoreboard styles */
