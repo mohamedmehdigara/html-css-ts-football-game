@@ -1,11 +1,26 @@
-// Game logic goes here
-
 // Get references to SVG elements
-const player1 = document.getElementById('player1') as SVGCircleElement;
-const player2 = document.getElementById('player2') as SVGCircleElement;
-const player3 = document.getElementById('player3') as SVGCircleElement;
-const player4 = document.getElementById('player4') as SVGCircleElement;
-const ball = document.getElementById('ball') as SVGCircleElement;
+const player1Element = document.getElementById('player1');
+const player2Element = document.getElementById('player2');
+const player3Element = document.getElementById('player3');
+const player4Element = document.getElementById('player4');
+const ballElement = document.getElementById('ball');
+
+// Type guard for SVG element
+function isSVGElement(element: HTMLElement | null): element is SVGElement {
+    return element instanceof SVGElement;
+}
+
+// Type guard for SVGCircleElement
+function isSVGCircleElement(element: SVGElement | null): element is SVGCircleElement {
+    return element instanceof SVGCircleElement;
+}
+
+// Check and assign
+const player1 = isSVGElement(player1Element) && isSVGCircleElement(player1Element) ? player1Element : null;
+const player2 = isSVGElement(player2Element) && isSVGCircleElement(player2Element) ? player2Element : null;
+const player3 = isSVGElement(player3Element) && isSVGCircleElement(player3Element) ? player3Element : null;
+const player4 = isSVGElement(player4Element) && isSVGCircleElement(player4Element) ? player4Element : null;
+const ball = isSVGElement(ballElement) && isSVGCircleElement(ballElement) ? ballElement : null;
 
 // Constants
 const fieldWidth = 800;
