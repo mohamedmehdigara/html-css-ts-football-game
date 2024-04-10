@@ -1,6 +1,10 @@
+// Game logic goes here
+
 // Get references to SVG elements
 const player1 = document.getElementById('player1') as SVGCircleElement;
 const player2 = document.getElementById('player2') as SVGCircleElement;
+const player3 = document.getElementById('player3') as SVGCircleElement;
+const player4 = document.getElementById('player4') as SVGCircleElement;
 const ball = document.getElementById('ball') as SVGCircleElement;
 
 // Constants
@@ -18,8 +22,12 @@ let gameLoop: number | null = null;
 // Initial positions
 let player1X = 50;
 let player1Y = 250;
-let player2X = 750;
+let player2X = 200;
 let player2Y = 250;
+let player3X = 400;
+let player3Y = 150;
+let player4X = 600;
+let player4Y = 350;
 let ballX = 400;
 let ballY = 250;
 let ballSpeedX = 2;
@@ -85,6 +93,12 @@ function updateBall() {
         ballSpeedX *= -1;
     }
     if (checkPlayerCollision(player2X, player2Y)) {
+        ballSpeedX *= -1;
+    }
+    if (checkPlayerCollision(player3X, player3Y)) {
+        ballSpeedX *= -1;
+    }
+    if (checkPlayerCollision(player4X, player4Y)) {
         ballSpeedX *= -1;
     }
 
@@ -165,10 +179,16 @@ function handlePlayerMovement(event: KeyboardEvent) {
                 if (player2Y < fieldHeight) player2Y += playerSpeed;
                 break;
             case 'z':
-                if (player2X > 0) player2X -= playerSpeed;
+                if (player3Y > 0) player3Y -= playerSpeed;
                 break;
             case 'x':
-                if (player2X < fieldWidth) player2X += playerSpeed;
+                if (player3Y < fieldHeight) player3Y += playerSpeed;
+                break;
+            case 'm':
+                if (player4Y > 0) player4Y -= playerSpeed;
+                break;
+            case ',':
+                if (player4Y < fieldHeight) player4Y += playerSpeed;
                 break;
         }
         updatePlayerPosition();
@@ -179,8 +199,6 @@ function handlePlayerMovement(event: KeyboardEvent) {
 function updatePlayerPosition() {
     player1.setAttribute('cy', player1Y.toString());
     player2.setAttribute('cy', player2Y.toString());
-    player2.setAttribute('cx', player2X.toString());
+    player3.setAttribute('cy', player3Y.toString());
+    player4.setAttribute('cy', player4Y.toString());
 }
-
-// Start game automatically when page loads
-startGame();

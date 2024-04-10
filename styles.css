@@ -28,16 +28,14 @@ body {
 }
 
 /* Player styles */
-#player1,
-#player2 {
+circle {
     stroke: #000000;
     stroke-width: 2px;
 }
 
 /* Ball styles */
 #ball {
-    stroke: #000000;
-    stroke-width: 2px;
+    fill: #FFF;
 }
 
 /* Scoreboard styles */
