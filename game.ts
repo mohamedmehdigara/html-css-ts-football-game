@@ -1,15 +1,7 @@
 // Get references to SVG elements
-// Get references to SVG elements
-// Get references to SVG elements
-// Get references to SVG elements
-const player1Element = document.getElementById('player1') as SVGRectElement | null;
-const player2Element = document.getElementById('player2') as SVGRectElement | null;
-const ballElement = document.getElementById('ball') as SVGCircleElement | null;
-
-// Check if elements exist before using them
-const player1 = player1Element ?? null;
-const player2 = player2Element ?? null;
-const ball = ballElement ?? null;
+const player1 = document.getElementById('player1') as SVGRectElement | null;
+const player2 = document.getElementById('player2') as SVGRectElement | null;
+const ball = document.getElementById('ball') as SVGCircleElement | null;
 
 // Constants
 const fieldWidth = 800;
@@ -21,7 +13,7 @@ let scorePlayer1 = 0;
 let scorePlayer2 = 0;
 let gameTime = 60;
 let gameStarted = false;
-let gameLoop: number | null = null; // Define type explicitly
+let gameLoop: number | null = null;
 
 // Initial positions
 let player1Y = fieldHeight / 2 - playerHeight / 2;
@@ -57,7 +49,6 @@ function handlePlayerMovement(event: KeyboardEvent) {
     }
 }
 
-
 // Function to move a player
 function movePlayer(player: SVGRectElement, yPos: number, speed: number, direction: number) {
     yPos += speed * direction;
@@ -76,7 +67,7 @@ function startOrResetGame() {
 // Function to start the game
 function startGame() {
     gameStarted = true;
-    (startButton as HTMLElement).style.display = 'none'; // Type assertion
+    startButton.style.display = 'none';
     gameTime = 60;
     scorePlayer1 = 0;
     scorePlayer2 = 0;
@@ -86,12 +77,13 @@ function startGame() {
     gameLoop = window.setInterval(updateGame, 1000 / 60); // Use window.setInterval
 }
 
+// Function to reset the game
 function resetGame() {
     gameStarted = false;
-    (startButton as HTMLElement).style.display = 'block'; // Type assertion
+    startButton.style.display = 'block';
     clearInterval(gameLoop!);
-    gameLoop = null;
 }
+
 // Function to update the game state
 function updateGame() {
     updateBall();
@@ -100,35 +92,38 @@ function updateGame() {
 
 // Function to update the position of the ball
 function updateBall() {
-    ballX += ballSpeedX;
-    ballY += ballSpeedY;
+    if (ball) {
+        ballX += ballSpeedX;
+        ballY += ballSpeedY;
 
-    // Check for collisions with top and bottom walls
-    if (ballY - ballRadius <= 0 || ballY + ballRadius >= fieldHeight) {
-        ballSpeedY *= -1;
-    }
+        // Check for collisions with top and bottom walls
+        if (ballY - ballRadius <= 0 || ballY + ballRadius >= fieldHeight) {
+            ballSpeedY *= -1;
+        }
 
-    // Check for collisions with players
-    if (ballX - ballRadius <= 70 && ballY >= player1Y && ballY <= player1Y + playerHeight) {
-        ballSpeedX *= -1;
-    }
-    if (ballX + ballRadius >= fieldWidth - 70 && ballY >= player2Y && ballY <= player2Y + playerHeight) {
-        ballSpeedX *= -1;
-    }
+        // Check for collisions with players
+        if (ballX - ballRadius <= 70 && ballY >= player1Y && ballY <= player1Y + playerHeight) {
+            ballSpeedX *= -1;
+        }
+        if (ballX + ballRadius >= fieldWidth - 70 && ballY >= player2Y && ballY <= player2Y + playerHeight) {
+            ballSpeedX *= -1;
+        }
 
-    // Check for goal
-    if (ballX - ballRadius <= 0) {
-        scorePlayer2++;
-        resetBall();
-        updateScoreDisplay();
-    } else if (ballX + ballRadius >= fieldWidth) {
-        scorePlayer1++;
-        resetBall();
-        updateScoreDisplay();
-    }
+        // Check for goal
+        if (ballX - ballRadius <= 0) {
+            scorePlayer2++;
+            resetBall();
+            updateScoreDisplay();
+        } else if (ballX + ballRadius >= fieldWidth) {
+            scorePlayer1++;
+            resetBall();
+            updateScoreDisplay();
+        }
 
-    ball.setAttribute('cx', ballX.toString());
-    ball.setAttribute('cy', ballY.toString());
+        // Update ball position
+        ball.setAttribute('cx', ballX.toString());
+        ball.setAttribute('cy', ballY.toString());
+    }
 }
 
 // Function to reset the position of the ball

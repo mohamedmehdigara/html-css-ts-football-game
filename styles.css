@@ -1,88 +1,88 @@
 /* Reset default margin and padding */
-body, html {
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
-/* Center the game container vertically and horizontally */
-#container {
+/* Body styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
 
-/* Style for the football field SVG */
-#field {
-    border: 2px solid #ffffff; /* Add border around the field */
-    margin-right: 20px; /* Add space between field and other elements */
+/* Container styles */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-/* Style for the goal posts */
-#field rect {
-    stroke: #ffffff; /* Add white outline to all SVG rectangles */
+/* Football field styles */
+#footballField {
+    margin-top: 20px;
 }
 
-/* Style for the center circle */
-#field circle {
-    stroke: #ffffff; /* Add white outline to SVG circles */
-    stroke-dasharray: 5; /* Add dashed stroke style */
+/* Goal styles */
+rect {
+    stroke: #000;
+    stroke-width: 2;
 }
 
-/* Style for the players */
-#player1, #player2 {
-    cursor: pointer; /* Change cursor to pointer when hovering over players */
+/* Player styles */
+#player1 {
+    fill: #FFC107; /* Player 1 color */
+    transition: fill 0.3s ease; /* Smooth transition for player color change */
 }
 
-/* Style for the ball */
+#player2 {
+    fill: #2196F3; /* Player 2 color */
+    transition: fill 0.3s ease; /* Smooth transition for player color change */
+}
+
+/* Ball styles */
 #ball {
-    animation: bounce 1s infinite alternate; /* Add bouncing animation to the ball */
+    fill: #FFF;
 }
 
-/* Keyframes for bouncing animation */
-@keyframes bounce {
-    0% {
-        transform: translateY(-5px);
-    }
-    100% {
-        transform: translateY(5px);
-    }
+/* Scoreboard styles */
+#scoreboard {
+    margin-top: 20px;
+    font-size: 24px;
 }
 
-/* Style for the score display */
-#score {
-    font-size: 24px; /* Increase font size for better visibility */
-    margin-bottom: 10px; /* Add space between score display and timer display */
+/* Controls styles */
+#controls {
+    margin-top: 20px;
 }
 
-/* Style for the timer display */
+button {
+    padding: 10px 20px;
+    margin: 0 10px;
+    font-size: 18px;
+    cursor: pointer;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50; /* Default button color */
+    color: #FFF;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #45a049; /* Darker button color on hover */
+}
+
+/* Additional styles for button */
+button:focus {
+    outline: none; /* Remove focus outline */
+}
+
+/* Styles for scoreboard spans */
+#score,
 #timer {
-    font-size: 24px; /* Increase font size for better visibility */
-}
-
-/* Style for the button container */
-#buttonContainer {
-    margin-top: 20px; /* Add space between button container and other elements */
-}
-
-/* Style for the Start Game and Reset Game buttons */
-#buttonContainer button {
-    padding: 10px 20px; /* Add padding to buttons */
-    font-size: 18px; /* Increase font size for better visibility */
-    background-color: #4CAF50; /* Green background color */
-    color: white; /* White text color */
-    border: none; /* Remove border */
-    border-radius: 5px; /* Add rounded corners */
-    cursor: pointer; /* Change cursor to pointer when hovering over buttons */
-    margin-right: 10px; /* Add space between buttons */
-}
-
-/* Style for the Reset Game button */
-#resetButton {
-    background-color: #f44336; /* Red background color */
-}
-
-/* Hover effect for buttons */
-#buttonContainer button:hover {
-    opacity: 0.8; /* Reduce opacity on hover for visual feedback */
+    margin: 0 10px; /* Add spacing between score and timer */
 }
